@@ -6,3 +6,7 @@
 # IntelliJ IDEA
 .idea
 *.iml
+
+# Others
+.DS_Store
+__MACOSX
