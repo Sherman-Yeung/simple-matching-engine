@@ -1,5 +1,5 @@
 import data.Order;
-import data.TradeExection;
+import data.TradeExecution;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface MatchingEngine {
     List<OrderBook> getOrderBooks();
     OrderBook getOrderBook(String symbol);
     List<Order> getRejectOrders();
-    List<TradeExection> getTrades();
+    List<TradeExecution> getTrades();
 
     void acceptVisitor(EngineVisitor visitor);
 }

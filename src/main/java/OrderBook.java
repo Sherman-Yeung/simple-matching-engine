@@ -50,6 +50,7 @@ public class OrderBook {
     }
 
     public void addNewOrder(Order order) throws Exception {
+        if(order.getOrderType() != OrderType.LIMIT) return;
         if(_orderMap.containsKey(order.getOrderId())) {
             throw new Exception("Duplicate order: " + order.getOrderId());
         }
@@ -76,15 +77,16 @@ public class OrderBook {
     }
 
     public void replaceOrder(Order order, int oldOrderId) throws Exception {
+        if(order.getOrderType() != OrderType.LIMIT) return;
         removeOrder(oldOrderId);
         addNewOrder(order);
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Symbol: ").append(_ticker);
+        sb.append("Symbol[").append(_ticker).append("]");
         if(!_buyOrderQueue.isEmpty()) {
-            sb.append(" buy[");
+            sb.append("buy[");
             PriorityQueue<Order> tmpBuyQueue = new PriorityQueue<>(_buyOrderQueue);
             for (Order order : tmpBuyQueue) {
                 sb.append(order.getPrice()).append("|");
@@ -92,10 +94,10 @@ public class OrderBook {
             sb.deleteCharAt(sb.length() - 1);
             sb.append("]");
         }else{
-            sb.append(" buy[] ");
+            sb.append("buy[]");
         }
         if(!_sellOrderQueue.isEmpty()) {
-            sb.append(" sell[");
+            sb.append("sell[");
             PriorityQueue<Order> tmpSellQueue = new PriorityQueue<>(_sellOrderQueue);
             for (Order order : tmpSellQueue) {
                 sb.append(order.getPrice()).append("|");
@@ -103,7 +105,7 @@ public class OrderBook {
             sb.deleteCharAt(sb.length() - 1);
             sb.append("]");
         }else{
-            sb.append(" sell[] ");
+            sb.append("sell[]");
         }
         return sb.toString();
     }

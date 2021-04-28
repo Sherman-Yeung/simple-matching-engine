@@ -1,13 +1,8 @@
 import data.Order;
-import data.TradeExection;
+import data.TradeExecution;
 
-import java.io.File;
 import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class EngineResultPersistVisitor implements EngineVisitor {
 
@@ -17,7 +12,7 @@ public class EngineResultPersistVisitor implements EngineVisitor {
 
     @Override
     public void visit(MatchingEngine engine) {
-        List<TradeExection> tradeList = engine.getTrades();
+        List<TradeExecution> tradeList = engine.getTrades();
         persistTrades(tradeList);
 
         List<Order> rejectOrders = engine.getRejectOrders();
@@ -27,10 +22,10 @@ public class EngineResultPersistVisitor implements EngineVisitor {
         persistOrderBooks(orderBooks);
     }
 
-    private void persistTrades(List<TradeExection> tradeList) {
+    private void persistTrades(List<TradeExecution> tradeList) {
         try {
             FileWriter myWriter = new FileWriter(TRADE_FILE_NAME);
-            for(TradeExection trade : tradeList) {
+            for(TradeExecution trade : tradeList) {
                 myWriter.write(trade.toString()+"\n");
             }
             myWriter.flush();

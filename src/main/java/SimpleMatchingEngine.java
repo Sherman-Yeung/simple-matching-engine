@@ -3,7 +3,7 @@ import data.OrderSide;
 import data.OrderType;
 import data.OrderValidator;
 import data.OrderValidatorImpl;
-import data.TradeExection;
+import data.TradeExecution;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,11 +22,15 @@ import java.util.Set;
 
 public class SimpleMatchingEngine implements MatchingEngine {
 
+    public static final String ERROR_SYMBOL_HALTED = "Symbol halted!";
+    public static final String ERROR_SYMBOL_NOT_SUPPORTED = "Symbol not supported!";
+    public static final String ERROR_NO_MATCH = "No match!";
+
     private Map<String, OrderBook> _orderBooks = new HashMap<>();
     private Set<String> _haltedSymbols = new HashSet<>();
 
     private List<Order> _rejectOrders = new ArrayList<>();
-    private List<TradeExection> _tradeExectionList = new ArrayList<>();
+    private List<TradeExecution> _tradeExecutionList = new ArrayList<>();
 
     private OrderValidator _validator = new OrderValidatorImpl();
 
@@ -47,7 +51,9 @@ public class SimpleMatchingEngine implements MatchingEngine {
             System.out.println(e.getMessage());
         }
     }
-
+    /*
+    If symbol changed, need to send cancel/new instead
+     */
     public void amendOrder(Order order, int oldOrderId) {
         System.out.println("Received amend order: " + order + ", oldOrderId: " + oldOrderId);
         try {
@@ -80,7 +86,7 @@ public class SimpleMatchingEngine implements MatchingEngine {
                 if(buyOrder != null && sellOrder != null && buyOrder.getPrice() >= sellOrder.getPrice()) {
                     buyOrder = orderBook._buyOrderQueue.remove();
                     sellOrder = orderBook._sellOrderQueue.remove();
-                    generateTrade(order.getSymbol(), buyOrder.getPrice());
+                    generateTrade(order.getSymbol(), sellOrder.getPrice());
                 }
                 break;
             case MARKET:
@@ -90,12 +96,18 @@ public class SimpleMatchingEngine implements MatchingEngine {
                         if(!orderBook._sellOrderQueue.isEmpty()) {
                             sellOrder = orderBook._sellOrderQueue.remove();
                             generateTrade(order.getSymbol(), sellOrder.getPrice());
+                        }else{
+                            order.setText(ERROR_NO_MATCH);
+                            _rejectOrders.add(order);
                         }
                         break;
                     case SELL:
                         if(!orderBook._buyOrderQueue.isEmpty()) {
                             buyOrder = orderBook._buyOrderQueue.remove();
                             generateTrade(order.getSymbol(), buyOrder.getPrice());
+                        }else{
+                            order.setText(ERROR_NO_MATCH);
+                            _rejectOrders.add(order);
                         }
                         break;
                     default:
@@ -105,21 +117,21 @@ public class SimpleMatchingEngine implements MatchingEngine {
     }
 
     private void generateTrade(String symbol, double price) {
-        TradeExection newTrade = new TradeExection(symbol, price, new Date());
+        TradeExecution newTrade = new TradeExecution(symbol, price, new Date());
         System.out.println(newTrade);
-        _tradeExectionList.add(newTrade);
+        _tradeExecutionList.add(newTrade);
     }
 
     private void validate(Order order) throws Exception {
         if(_haltedSymbols.contains(order.getSymbol())) {
-            order.setText("Symbol halted!");
+            order.setText(ERROR_SYMBOL_HALTED);
             _rejectOrders.add(order);
-            throw new Exception("Symbol halted!");
+            throw new Exception(ERROR_SYMBOL_HALTED);
         }
         if(!_orderBooks.containsKey(order.getSymbol())) {
-            order.setText("Symbol not supported!");
+            order.setText(ERROR_SYMBOL_NOT_SUPPORTED);
             _rejectOrders.add(order);
-            throw new Exception("Symbol not supported!");
+            throw new Exception(ERROR_SYMBOL_NOT_SUPPORTED);
         }
         if(_validator != null) {
             try {
@@ -156,7 +168,7 @@ public class SimpleMatchingEngine implements MatchingEngine {
     public List<Order> getRejectOrders(){
         return _rejectOrders;
     }
-    public List<TradeExection> getTrades() {
-        return _tradeExectionList;
+    public List<TradeExecution> getTrades() {
+        return _tradeExecutionList;
     }
 }

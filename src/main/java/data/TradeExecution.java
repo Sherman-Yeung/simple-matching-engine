@@ -3,14 +3,16 @@ package data;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TradeExection {
+public class TradeExecution {
+    //Trade ID generator, better move to it's own interface and implementation
     static AtomicInteger execIdGenerator = new AtomicInteger(20000);
+
     int _tradeId;
     String _symbol;
     double _executionPrice;
     Date _executionTime;
 
-    public TradeExection(String symbol, double executionPrice, Date executionTime) {
+    public TradeExecution(String symbol, double executionPrice, Date executionTime) {
         this._tradeId = execIdGenerator.incrementAndGet();
         this._symbol = symbol;
         this._executionPrice = executionPrice;
