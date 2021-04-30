@@ -41,38 +41,38 @@ public class SimpleMatchingEngine implements MatchingEngine {
     }
 
     public void newOrder(Order order) {
-        System.out.println("Received new order: " + order);
+        //System.out.println("Received new order: " + order);
         try {
             validate(order);
             OrderBook orderBook = _orderBooks.get(order.getSymbol());
             orderBook.addNewOrder(order);
             tryMatch(order, orderBook);
         }catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
     /*
     If symbol changed, need to send cancel/new instead
      */
     public void amendOrder(Order order, int oldOrderId) {
-        System.out.println("Received amend order: " + order + ", oldOrderId: " + oldOrderId);
+        //System.out.println("Received amend order: " + order + ", oldOrderId: " + oldOrderId);
         try {
             validate(order);
             OrderBook orderBook = _orderBooks.get(order.getSymbol());
             orderBook.replaceOrder(order, oldOrderId);
             tryMatch(order, orderBook);
         }catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
 
     public void cancelOrder(Order order) {
-        System.out.println("Received cancel order: " + order.getOrderId());
+        //System.out.println("Received cancel order: " + order.getOrderId());
         try {
             OrderBook orderBook = _orderBooks.get(order.getSymbol());
             orderBook.removeOrder(order.getOrderId());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ public class SimpleMatchingEngine implements MatchingEngine {
 
     private void generateTrade(String symbol, double price) {
         TradeExecution newTrade = new TradeExecution(symbol, price, new Date());
-        System.out.println(newTrade);
+        //System.out.println(newTrade);
         _tradeExecutionList.add(newTrade);
     }
 

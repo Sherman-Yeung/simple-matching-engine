@@ -1,4 +1,4 @@
-import data.NewOrderImpl;
+import data.OrderImpl;
 import data.Order;
 import data.OrderSide;
 import data.OrderType;
@@ -34,7 +34,7 @@ public class SimpleMatchingEngineTest {
 
     @Test
     public void testAddNewOrderBuy() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.LIMIT);
@@ -47,7 +47,7 @@ public class SimpleMatchingEngineTest {
         String realOrderBook = engine.getOrderBook(order.getSymbol()).toString();
         Assertions.assertEquals(expectedOrderBook, realOrderBook);
 
-        Order order2 = new NewOrderImpl();
+        Order order2 = new OrderImpl();
         order2.setOrderId(2);
         order2.setSymbol("AMZN");
         order2.setOrderType(OrderType.LIMIT);
@@ -63,7 +63,7 @@ public class SimpleMatchingEngineTest {
 
     @Test
     public void testAddNewOrderSell() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.LIMIT);
@@ -76,7 +76,7 @@ public class SimpleMatchingEngineTest {
         String realOrderBook = engine.getOrderBook(order.getSymbol()).toString();
         Assertions.assertEquals(expectedOrderBook, realOrderBook);
 
-        Order order2 = new NewOrderImpl();
+        Order order2 = new OrderImpl();
         order2.setOrderId(2);
         order2.setSymbol("AMZN");
         order2.setOrderType(OrderType.LIMIT);
@@ -92,7 +92,7 @@ public class SimpleMatchingEngineTest {
 
     @Test
     public void testAmendOrder() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.LIMIT);
@@ -105,7 +105,7 @@ public class SimpleMatchingEngineTest {
         String realOrderBook = engine.getOrderBook(order.getSymbol()).toString();
         Assertions.assertEquals(expectedOrderBook, realOrderBook);
 
-        Order order2 = new NewOrderImpl();
+        Order order2 = new OrderImpl();
         order2.setOrderId(2);
         order2.setSymbol("AMZN");
         order2.setOrderType(OrderType.LIMIT);
@@ -120,7 +120,7 @@ public class SimpleMatchingEngineTest {
     }
     @Test
     public void testCancelOrder() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.LIMIT);
@@ -140,7 +140,7 @@ public class SimpleMatchingEngineTest {
     }
     @Test
     public void testAddNewOrderHalted() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("GOOG");
         order.setOrderType(OrderType.LIMIT);
@@ -154,7 +154,7 @@ public class SimpleMatchingEngineTest {
     }
     @Test
     public void testLimitOrderMatchLimitOrder() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.LIMIT);
@@ -167,7 +167,7 @@ public class SimpleMatchingEngineTest {
         String realOrderBook = engine.getOrderBook(order.getSymbol()).toString();
         Assertions.assertEquals(expectedOrderBook, realOrderBook);
 
-        Order order2 = new NewOrderImpl();
+        Order order2 = new OrderImpl();
         order2.setOrderId(2);
         order2.setSymbol("AMZN");
         order2.setOrderType(OrderType.LIMIT);
@@ -182,7 +182,7 @@ public class SimpleMatchingEngineTest {
 
     @Test
     public void testLimitOrderMatchMarketOrder() {
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.LIMIT);
@@ -195,7 +195,7 @@ public class SimpleMatchingEngineTest {
         String realOrderBook = engine.getOrderBook(order.getSymbol()).toString();
         Assertions.assertEquals(expectedOrderBook, realOrderBook);
 
-        Order order2 = new NewOrderImpl();
+        Order order2 = new OrderImpl();
         order2.setOrderId(1);
         order2.setSymbol("AMZN");
         order2.setOrderType(OrderType.MARKET);
@@ -210,7 +210,7 @@ public class SimpleMatchingEngineTest {
     @Test
     public void testNoMatchMarketOrder() {
 
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setOrderId(1);
         order.setSymbol("AMZN");
         order.setOrderType(OrderType.MARKET);
@@ -249,7 +249,7 @@ public class SimpleMatchingEngineTest {
         String price = tokens[3];
         String timestamp = tokens[4];
 
-        Order order = new NewOrderImpl();
+        Order order = new OrderImpl();
         order.setSymbol(symbol);
         order.setOrderId(orderIdGenerator.incrementAndGet());
         order.setOrderSide(OrderSide.fromName(side).get());
@@ -293,7 +293,9 @@ public class SimpleMatchingEngineTest {
         return symbolMap;
     }
 
-    public static void main(String[] args) {
+    //public static void main(String[] args) {
+    @Test
+    public void testWithHistData() {
 
         SimpleMatchingEngineTest test = new SimpleMatchingEngineTest();
         try {

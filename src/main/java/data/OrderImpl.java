@@ -3,12 +3,12 @@ package data;
 import java.util.Date;
 
 /**
- * This data.NewOrderImpl class represents blueprint for user requested orders
+ * This data.OrderImpl class represents blueprint for user requested orders
  *
  * @author Shuyuk Yeung
  *
  */
-public class NewOrderImpl implements Order {
+public class OrderImpl implements Order {
 
     int _orderId = -1;
     double _orderTime;
@@ -18,7 +18,7 @@ public class NewOrderImpl implements Order {
     OrderType _orderType;
     String _text;
 
-    public NewOrderImpl(int _orderId, double _orderTime, String symbol, double price, OrderSide orderSide, OrderType orderType) {
+    public OrderImpl(int _orderId, double _orderTime, String symbol, double price, OrderSide orderSide, OrderType orderType) {
         this._orderId = _orderId;
         this._orderTime = _orderTime;
         this._symbol = symbol;
@@ -27,7 +27,7 @@ public class NewOrderImpl implements Order {
         this._orderType = orderType;
     }
 
-    public NewOrderImpl(){}
+    public OrderImpl(){}
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
